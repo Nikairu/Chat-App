@@ -28,54 +28,51 @@ export default class Start extends React.Component {
         style={styles.background}
         imageStyle={{ resizeMode: 'cover' }}
       >
-        {/*Move input container when keyboard is showing*/}
-        <KeyboardAvoidingView
-          style={styles.keyboardContainer}
-          behavior='height'
-          keyboardVerticalOffset={Platform.OS === 'ios' ? 50 : 'height'}
-        >
-          <Text style={styles.title}>App Title</Text>
-          {/* Container for input components */}
-          <View style={styles.startContainer}>
-            <View>
-              <TextInput
-                style={styles.textInput}
-                // When name is changed, store as state to pass to Chat screen
-                onChangeText={(name) => this.setState({ name })}
-                value={this.state.name}
-                placeholder='Your Name'
-              />
-            </View>
-            <View style={styles.colorTextContainer}>
-              <Text style={styles.colorText}>Choose Background Color:</Text>
-              {/* Buttons to select Bg*/}
-              <View style={styles.colorContainer}>
-                {colors.map((color) => (
-                  <View
-                    style={[
-                      styles.colorBorder,
-                      colorChoice === color ? { borderColor: color } : null,
-                    ]}
-                    key={color}
-                  >
-                    <TouchableOpacity
-                      onPress={() => this.setState({ colorChoice: color })}
-                      style={[styles.colorButton, { backgroundColor: color }]}
-                    />
-                  </View>
-                ))}
-              </View>
-            </View>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() =>
-                navigation.navigate('Chat', { name: name, color: colorChoice })
-              }
-            >
-              <Text style={styles.buttonText}>Start Chatting</Text>
-            </TouchableOpacity>
+        <Text style={styles.title}>App Title</Text>
+        {/* Container for input components */}
+        <View style={styles.startContainer}>
+          <View>
+            <TextInput
+              style={styles.textInput}
+              // When name is changed, store as state to pass to Chat screen
+              onChangeText={(name) => this.setState({ name })}
+              value={this.state.name}
+              placeholder='Your Name'
+            />
           </View>
-        </KeyboardAvoidingView>
+          <View style={styles.colorTextContainer}>
+            <Text style={styles.colorText}>Choose Background Color:</Text>
+            {/* Buttons to select Bg*/}
+            <View style={styles.colorContainer}>
+              {colors.map((color) => (
+                <View
+                  style={[
+                    styles.colorBorder,
+                    colorChoice === color ? { borderColor: color } : null,
+                  ]}
+                  key={color}
+                >
+                  <TouchableOpacity
+                    onPress={() => this.setState({ colorChoice: color })}
+                    style={[styles.colorButton, { backgroundColor: color }]}
+                  />
+                </View>
+              ))}
+            </View>
+          </View>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() =>
+              navigation.navigate('Chat', { name: name, color: colorChoice })
+            }
+          >
+            <Text style={styles.buttonText}>Start Chatting</Text>
+          </TouchableOpacity>
+        </View>
+        {/*Move input container when keyboard is showing*/}
+        {Platform.OS === 'android' ? (
+          <KeyboardAvoidingView behavior='height' />
+        ) : null}
       </ImageBackground>
     );
   }
@@ -86,10 +83,8 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: 'cover',
     /* justifyContent: 'center', */
-    /* alignItems: 'center', */
-    paddingRight: '6%',
-    paddingLeft: '6%',
-    paddingBottom: '6%',
+    alignItems: 'center',
+    padding: '6%',
   },
   keyboardContainer: {
     flex: 1,
@@ -127,7 +122,7 @@ const styles = StyleSheet.create({
     borderColor: '#757083',
     borderWidth: 1,
     borderRadius: 2,
-    paddingLeft: 20,
+    paddingLeft: '12%',
   },
   colorTextContainer: {
     display: 'flex',
