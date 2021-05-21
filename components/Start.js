@@ -28,7 +28,7 @@ export default class Start extends React.Component {
         style={styles.background}
         imageStyle={{ resizeMode: 'cover' }}
       >
-        <Text style={styles.title}>App Title</Text>
+        <Text style={styles.title}>Chat App</Text>
         {/* Container for input components */}
         <View style={styles.startContainer}>
           <View>

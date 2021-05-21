@@ -13,6 +13,7 @@ import InputScrollView from 'react-native-input-scroll-view';
 import Start from './components/Start';
 import Chat from './components/Chat';
 
+
 import {
   StyleSheet,
   View,
