@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Platform, KeyboardAvoidingView } from 'react-native';
 import { Text, Button } from 'react-native';
-import { GiftedChat, Bubble } from 'react-native-gifted-chat';
+import { GiftedChat, Bubble, InputToolbar } from 'react-native-gifted-chat';
 import NetInfo from '@react-native-community/netinfo';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const firebase = require('firebase');
 require('firebase/firestore');
@@ -37,6 +38,8 @@ export default class Screen1 extends React.Component {
     const { name } = this.props.route.params;
 
     this.props.navigation.setOptions({ title: name });
+
+    this.getMessages();
 
     NetInfo.fetch().then((connection) => {
       if (connection.isConnected) {
@@ -73,7 +76,7 @@ export default class Screen1 extends React.Component {
         this.setState({
           isConnected: false,
         });
-        /* this.getMessages(); */
+        this.getMessages();
         window.alert(
           'You are currently offline and will not be able to send messages.'
         );
@@ -97,7 +100,7 @@ export default class Screen1 extends React.Component {
       }),
       () => {
         this.addMessage();
-        /* this.saveMessages(); */
+        this.saveMessages();
       }
     );
   }
@@ -127,16 +130,28 @@ export default class Screen1 extends React.Component {
     });
   };
 
-  /*   async saveMessages() {
+  async getMessages() {
+    let messages = [];
     try {
-      await AsynStorage.setItem(
+      messages = (await AsyncStorage.getItem('messages')) || [];
+      this.setState({
+        messages: JSON.parse(messages),
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  async saveMessages() {
+    try {
+      await AsyncStorage.setItem(
         'messages',
         JSON.stringify(this.state.messages)
       );
     } catch (error) {
       console.log(error.message);
     }
-  } */
+  }
 
   addMessage() {
     const message = this.state.messages[0];
@@ -164,16 +179,22 @@ export default class Screen1 extends React.Component {
     );
   }
 
+  renderInputToolbar(props) {
+    if (this.state.isConnected == false) {
+    } else {
+      return <InputToolbar {...props} />;
+    }
+  }
+
   render() {
     // Gets name and color from previous screen
     const { color } = this.props.route.params;
-
-    // Sets user's name
 
     return (
       // Sets color picked in Start as Chat background color
       <View style={{ flex: 1, backgroundColor: color }}>
         <GiftedChat
+          renderInputToolbar={this.renderInputToolbar.bind(this)}
           renderBubble={this.renderBubble.bind(this)}
           messages={this.state.messages}
           onSend={(messages) => this.onSend(messages)}
