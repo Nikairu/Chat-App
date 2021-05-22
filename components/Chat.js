@@ -73,7 +73,7 @@ export default class Screen1 extends React.Component {
         this.setState({
           isConnected: false,
         });
-        this.getMessages();
+        /* this.getMessages(); */
         window.alert(
           'You are currently offline and will not be able to send messages.'
         );
