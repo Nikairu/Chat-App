@@ -1,9 +1,10 @@
 import React from 'react';
 import { View, Platform, KeyboardAvoidingView } from 'react-native';
-import { Text, Button } from 'react-native';
 import { GiftedChat, Bubble, InputToolbar } from 'react-native-gifted-chat';
 import NetInfo from '@react-native-community/netinfo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomActions from './CustomActions';
+import MapView from 'react-native-maps';
 
 const firebase = require('firebase');
 require('firebase/firestore');
@@ -43,7 +44,6 @@ export default class Screen1 extends React.Component {
 
     NetInfo.fetch().then((connection) => {
       if (connection.isConnected) {
-        console.log('online');
         this.setState({
           isConnected: true,
         });
@@ -72,7 +72,6 @@ export default class Screen1 extends React.Component {
             .onSnapshot(this.onCollectionUpdate);
         });
       } else {
-        console.log('offline');
         this.setState({
           isConnected: false,
         });
@@ -186,6 +185,30 @@ export default class Screen1 extends React.Component {
     }
   }
 
+  // Import CustomActions to display ActionSheet
+  renderCustomActions = (props) => {
+    return <CustomActions {...props} />;
+  };
+
+  // Render view of map if location is included in message
+  renderCustomView(props) {
+    const { currentMessage } = props;
+    if (currentMessage.location) {
+      return (
+        <MapView
+          style={{ width: 150, height: 100, borderRadius: 13, margin: 3 }}
+          region={{
+            latitude: Number(currentMessage.location.latitude),
+            longitude: Number(currentMessage.location.longitude),
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        />
+      );
+    }
+    return null;
+  }
+
   render() {
     // Gets name and color from previous screen
     const { color } = this.props.route.params;
@@ -194,6 +217,8 @@ export default class Screen1 extends React.Component {
       // Sets color picked in Start as Chat background color
       <View style={{ flex: 1, backgroundColor: color }}>
         <GiftedChat
+          renderCustomView={this.renderCustomView}
+          renderActions={this.renderCustomActions}
           renderInputToolbar={this.renderInputToolbar.bind(this)}
           renderBubble={this.renderBubble.bind(this)}
           messages={this.state.messages}
