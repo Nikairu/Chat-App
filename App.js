@@ -7,22 +7,8 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-// import react-native-input-scroll-view
-import InputScrollView from 'react-native-input-scroll-view';
-
 import Start from './components/Start';
 import Chat from './components/Chat';
-
-
-import {
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  Alert,
-  Button,
-  ScrollView,
-} from 'react-native';
 
 // Create the navigator
 const Stack = createStackNavigator();

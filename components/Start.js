@@ -1,3 +1,7 @@
+/**
+ * @description start.js is the main screen of the app.
+ */
+
 import React from 'react';
 import {
   ImageBackground,
