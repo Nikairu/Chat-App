@@ -42,7 +42,7 @@ And to run:
 expo start
 ```
 
-## Setup firebase account
+## Setup your own firebase account
 
 You should also set up firebase account for your own use. To do this follow these steps:
 
